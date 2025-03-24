@@ -7,33 +7,40 @@ export const postSpaces = async (
   event: APIGatewayProxyEvent,
   ddbClient: DynamoDBClient
 ): Promise<APIGatewayProxyResult> => {
-  const body = JSON.parse(event.body);
+  try {
+    const body = JSON.parse(event.body);
 
-  const queryBySpacenameResponse = await queryBySpacename(event, ddbClient);
+    const queryBySpacenameResponse = await queryBySpacename(event, ddbClient);
 
-  if (queryBySpacenameResponse) {
+    if (queryBySpacenameResponse) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify(
+          `There is a space with spacename ${body.spacename} that already exists.`
+        ),
+      };
+    }
+
+    const randomId = v4();
+
+    const result = await ddbClient.send(
+      new PutItemCommand({
+        TableName: process.env.TABLE_NAME,
+        Item: {
+          id: { S: randomId },
+          spacename: { S: body.spacename },
+        },
+      })
+    );
+
     return {
-      statusCode: 400,
-      body: JSON.stringify(
-        `There is a space with spacename ${body.spacename} that already exists.`
-      ),
+      body: JSON.stringify({ id: randomId, spacename: body.spacename }),
+      statusCode: 200,
+    };
+  } catch (error) {
+    return {
+      body: JSON.stringify(error),
+      statusCode: 500,
     };
   }
-
-  const randomId = v4();
-
-  const result = await ddbClient.send(
-    new PutItemCommand({
-      TableName: process.env.TABLE_NAME,
-      Item: {
-        id: { S: randomId },
-        spacename: { S: body.spacename },
-      },
-    })
-  );
-
-  return {
-    body: JSON.stringify({ id: randomId, spacename: body.spacename }),
-    statusCode: 200,
-  };
 };
