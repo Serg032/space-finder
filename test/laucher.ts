@@ -1,3 +1,11 @@
-import { handler } from "../src/services/hello";
+import { handler } from "../src/services/spaces/app/handler";
 
-handler({} as any, {} as any);
+handler(
+  {
+    httpMethod: "POST",
+    body: JSON.stringify({
+      spacename: "Los Angeles",
+    }),
+  } as any,
+  {} as any
+);

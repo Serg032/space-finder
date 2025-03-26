@@ -8,7 +8,8 @@
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${relativeFile}"],
       "env": {
-        "AWS_REGION": "eu-west-1"
+        "AWS_REGION": "eu-west-1",
+        "TABLE_NAME": "SpacesTable-06438ba1b79f"
       }
     }
   ]

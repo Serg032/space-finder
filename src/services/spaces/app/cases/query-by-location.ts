@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { DynamoDBClient, QueryCommand } from "@aws-sdk/client-dynamodb";
-import { Space } from "../domain";
+import { Space } from "../../domain";
 
 export const queryBySpacename = async (
   event: APIGatewayProxyEvent,

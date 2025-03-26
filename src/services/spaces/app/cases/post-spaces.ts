@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { v4 } from "uuid";
+import { randomUUID } from "crypto";
+import { marshall } from "@aws-sdk/util-dynamodb";
 import { queryBySpacename } from "./query-by-location";
 
 export const postSpaces = async (
@@ -21,15 +22,15 @@ export const postSpaces = async (
       };
     }
 
-    const randomId = v4();
+    const randomId = randomUUID();
 
     const result = await ddbClient.send(
       new PutItemCommand({
         TableName: process.env.TABLE_NAME,
-        Item: {
-          id: { S: randomId },
-          spacename: { S: body.spacename },
-        },
+        Item: marshall({
+          id: randomId,
+          spacename: body.spacename,
+        }),
       })
     );
 
