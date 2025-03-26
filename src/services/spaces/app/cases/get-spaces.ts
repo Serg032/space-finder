@@ -37,21 +37,24 @@ export const getSpaces = async (
           statusCode: 200,
         };
       }
-      if ("spacename" in queryStringParameters) {
-        const spacename = queryStringParameters["spacename"];
-        if (!spacename) {
+      if ("name" in queryStringParameters) {
+        const name = queryStringParameters["name"];
+        if (!name) {
           return {
-            body: "spacename is required",
+            body: "name is required",
             statusCode: 400,
           };
         }
         const result = await ddbClient.send(
           new QueryCommand({
             TableName: process.env.TABLE_NAME,
-            IndexName: "SpaceNameIndex",
-            KeyConditionExpression: "spacename = :spacename",
+            IndexName: "NameIndex",
+            ExpressionAttributeNames: {
+              "#name": "name",
+            },
+            KeyConditionExpression: "#name = :spacename",
             ExpressionAttributeValues: {
-              ":spacename": { S: spacename },
+              ":spacename": { S: name },
             },
           })
         );
@@ -60,7 +63,7 @@ export const getSpaces = async (
           body: JSON.stringify({
             item: result.Items
               ? result.Items.map((item) => unmarshall(item))
-              : `Spaces with name ${spacename} not found`,
+              : `Spaces with name ${name} not found`,
           }),
           statusCode: 200,
         };

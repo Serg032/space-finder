@@ -19,9 +19,9 @@ export class DataStack extends Stack {
     });
 
     spacesTable.addGlobalSecondaryIndex({
-      indexName: "SpaceNameIndex",
+      indexName: "NameIndex",
       partitionKey: {
-        name: "spacename",
+        name: "name",
         type: AttributeType.STRING,
       },
     });

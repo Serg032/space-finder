@@ -67,7 +67,7 @@ export class LambdaStack extends Stack {
         ],
         resources: [
           props.spacesTable.tableArn,
-          `${props.spacesTable.tableArn}/index/SpaceNameIndex`,
+          `${props.spacesTable.tableArn}/index/NameIndex`,
         ],
       })
     );

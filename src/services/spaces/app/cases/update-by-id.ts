@@ -16,7 +16,7 @@ export const updateSpaceById = async (
       };
     }
 
-    const spacename = JSON.parse(body).spacename;
+    const name = JSON.parse(body).name;
 
     const response = await ddbClient.send(
       new UpdateItemCommand({
@@ -26,13 +26,13 @@ export const updateSpaceById = async (
             S: id,
           },
         },
-        UpdateExpression: "set #SPACENAME = :s",
+        UpdateExpression: "set #NAME = :s",
         ExpressionAttributeNames: {
-          "#SPACENAME": "spacename",
+          "#NAME": "name",
         },
         ExpressionAttributeValues: {
           ":s": {
-            S: spacename,
+            S: name,
           },
         },
         ConditionExpression: "attribute_exists(id)",

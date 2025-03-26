@@ -4,7 +4,7 @@ handler(
   {
     httpMethod: "POST",
     body: JSON.stringify({
-      spacename: "Los Angeles",
+      name: "Los Angeles",
     }),
   } as any,
   {} as any
