@@ -7,6 +7,7 @@ import {
 import { postSpaces } from "./cases/post-spaces";
 import { getSpaces } from "./cases/get-spaces";
 import { updateSpaceById } from "./cases/update-by-id";
+import { deleteSpaceById } from "./cases/delete-by-id";
 
 const ddbClient = new DynamoDBClient();
 
@@ -27,6 +28,9 @@ export async function handler(
       case "PUT":
         message = "Hello from PUT";
         return await updateSpaceById(event, ddbClient);
+      case "DELETE":
+        message = "Hello from DELETE";
+        return await deleteSpaceById(event, ddbClient);
       default:
         message = "Hello from default";
     }
